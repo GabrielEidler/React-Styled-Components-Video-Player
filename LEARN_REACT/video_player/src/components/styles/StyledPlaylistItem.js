@@ -5,8 +5,8 @@ const StyledPlaylistItem = styled.div`
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background: none;
-  border: ${props => (props.active ? "2px dotted #696969" : "none")};
-  font-size: 1.6em;
+  border: ${props => (props.active ? "2px solid #696969" : "none")};
+  font-size: ${props => (props.active ? "2em" : "1.6em")};
   color: ${props => props.theme.color};
   min-height: 50px;
   padding: 10px 20px;
@@ -21,17 +21,21 @@ const StyledPlaylistItem = styled.div`
   cursor: pointer;
   position: relative;
 
-  ::before {
-    display: ${props => (props.active || !props.played ? "none" : "block")};
+  ::after {
+    display: ${props => (props.active || !props.played ? "none" : "inline-block")};
     content: "";
-    width: 10px;
-    min-height: 10px;
-    background: #409f4e;
-    border-radius: 50px;
-    position: absolute;
-    left: 0;
-    top: 19px;
-  }
+    margin-left: 15px;
+    margin-bottom: 10px;
+    --borderWidth: 4px;
+    --height: 16px;
+    --width: 7px;
+    --borderColor: #78b13f;
+    transform: rotate(45deg);
+    height: var(--height);
+    width: var(--width);
+    border-bottom: var(--borderWidth) solid var(--borderColor);
+    border-right: var(--borderWidth) solid var(--borderColor);
+    }
 
   .wbn-player__video-nr {
     flex-grow: 1; /* default 0 */
