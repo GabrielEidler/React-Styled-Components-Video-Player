@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import PlaylistItem from '../PlaylistItem';
 import StyledPlaylistitems from '../styles/StyledPlaylistitems';
 
@@ -10,7 +10,7 @@ const PlaylistItems = ({ videos, active }) => (
                 key={videos.id}
                 video={video}
                 active={video.id === active.id ? true : false}
-                playes={video.played}
+                played={video.played}
             />
         ))}
     </StyledPlaylistitems>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Video from "../Video";
 import Playlist from "../containers/Playlist";
 import { ThemeProvider } from 'styled-components'
@@ -25,7 +25,43 @@ const themeLight = {
     color: "#353535"
 }
 
-const WbnPlayer = props => {
+const WbnPlayer = ({ match, history, location }) => {
+
+    // get videos from index.html in-browser
+    const unParsedVideos = document.querySelector('[name="videos"]').value;
+    const videos = JSON.parse(unParsedVideos);
+
+    //set default states
+    const [state, setState] = useState({
+        videos: videos.playlist,
+        activeVideo: videos.playlist[0],
+        nightMode: true,
+        playlistId: videos.playlistId,
+        autoplay: false,
+    });
+
+    useEffect(() => {
+        const videoId = match.params.activeVideo;
+        //find video in which the active video matches the video in the videos array
+        const newActiveVideo = state.videos.findIndex(
+            video => video.id === videoId
+        )
+
+        if (videoId !== undefined) {
+            //what we do now is a way to AVOID infinite loop with useEffect
+            setState(prev => ({
+                ...prev,
+                activeVideo: prev.videos[newActiveVideo],
+                autoplay: location.autoplay,
+            }));
+        } else {
+            history.push({
+                pathname: `/${state.activeVideo.id}`,
+                autoplay: false,
+            })
+        }
+
+    }, [history, location.autoplay, match.params.activeVideo, state.activeVideo.id, state.videos]);
 
     const nightModeCallback = () => {
 
